@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user recovery progress and basic info.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID" },
+        "displayName": { "type": "string", "description": "User's display name" },
+        "email": { "type": "string", "format": "email", "description": "User's email" },
+        "photoURL": { "type": "string", "format": "url", "description": "User's profile photo URL" },
+        "sobrietyStartDate": { "type": "string", "format": "date-time", "description": "When the user started their current streak" },
+        "longestStreak": { "type": "integer", "description": "Longest streak achieved in days" },
+        "lastRelapseDate": { "type": "string", "format": "date-time", "description": "When the user last relapsed" },
+        "notifiedMilestones": { "type": "array", "items": { "type": "integer" }, "description": "List of milestones already notified" }
+      },
+      "required": ["uid", "displayName", "email", "sobrietyStartDate", "longestStreak"]
+    },
+    "JournalEntry": {
+      "title": "Journal Entry",
+      "description": "Daily reflections and mood tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Entry ID" },
+        "uid": { "type": "string", "description": "User ID who owns this entry" },
+        "date": { "type": "string", "format": "date-time", "description": "When the entry was created" },
+        "content": { "type": "string", "description": "The text content of the entry" },
+        "mood": { "type": "string", "enum": ["calm", "tempted", "struggling", "victorious"], "description": "The user's mood at the time" }
+      },
+      "required": ["id", "uid", "date", "content", "mood"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile document"
+    },
+    "/users/{userId}/journal/{entryId}": {
+      "schema": "JournalEntry",
+      "description": "User's journal entries"
+    }
+  }
+}
